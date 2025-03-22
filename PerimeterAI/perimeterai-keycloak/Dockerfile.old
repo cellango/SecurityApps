@@ -1,0 +1,21 @@
+FROM quay.io/keycloak/keycloak:latest as builder
+
+WORKDIR /opt/keycloak
+
+# Copy custom theme
+COPY src/main/resources/theme/perimeter /opt/keycloak/themes/perimeter
+
+# Copy custom modules
+COPY modules /opt/keycloak/providers/
+
+# Build custom modules
+RUN /opt/keycloak/bin/kc.sh build
+
+FROM quay.io/keycloak/keycloak:latest
+
+COPY --from=builder /opt/keycloak/lib/quarkus/ /opt/keycloak/lib/quarkus/
+COPY --from=builder /opt/keycloak/themes/perimeter /opt/keycloak/themes/perimeter
+
+WORKDIR /opt/keycloak
+
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]

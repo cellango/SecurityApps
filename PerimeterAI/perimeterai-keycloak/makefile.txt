@@ -1,0 +1,8 @@
+# Available commands:
+make build     # Build Keycloak service
+make up        # Start Keycloak and PostgreSQL
+make down      # Stop all services
+make logs      # View Keycloak logs
+make clean     # Clean up all resources including volumes
+make restart   # Restart all services
+make health    # Check Keycloak health status

@@ -1,0 +1,39 @@
+<![CDATA[<div class="col-sm-9 col-md-10 col-sm-push-3 col-md-push-2">
+    <h1>{{:: 'tenant-management' | translate}}</h1>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>{{:: 'tenant-name' | translate}}</th>
+                <th>{{:: 'tenant-id' | translate}}</th>
+                <th>{{:: 'tenant-description' | translate}}</th>
+                <th>{{:: 'tenant-status' | translate}}</th>
+                <th>{{:: 'actions' | translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="tenant in tenants">
+                <td>{{tenant.name}}</td>
+                <td>{{tenant.id}}</td>
+                <td>{{tenant.description}}</td>
+                <td>{{tenant.status}}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            {{:: 'actions' | translate}}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="editTenant(tenant)">{{:: 'edit' | translate}}</a></li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" ng-click="deleteTenant(tenant)">{{:: 'delete' | translate}}</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pull-right">
+        <button class="btn btn-primary" ng-click="addTenant()">{{:: 'add-tenant' | translate}}</button>
+    </div>
+</div>]]>

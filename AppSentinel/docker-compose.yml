@@ -1,0 +1,99 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: appinventory
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: >
+      bash -c "
+        psql -U postgres -c 'CREATE DATABASE appscore;' || true
+      "
+
+  appinventory-backend:
+    build:
+      context: ./AppInventory/backend
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/appinventory
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:postgres@postgres:5432/appinventory
+      - JWT_SECRET_KEY=your-secret-key
+      - FLASK_APP=app
+      - FLASK_ENV=development
+    ports:
+      - "5001:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  appscore-backend:
+    build:
+      context: ./AppScore/backend
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/appscore
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:postgres@postgres:5432/appscore
+      - JWT_SECRET_KEY=your-secret-key
+      - FLASK_APP=app
+      - FLASK_ENV=development
+    ports:
+      - "5002:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+    command: start-dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./AppInventory/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:5001
+      REACT_APP_APPSCORE_API_URL: http://localhost:5002
+    depends_on:
+      - appinventory-backend
+      - appscore-backend
+
+volumes:
+  postgres-data:
+
+networks:
+  app-network:

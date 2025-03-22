@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  admin-console:
+    build:
+      target: production
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=https://${DOMAIN}/api
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.admin.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.admin.tls=true"
+
+  postgres:
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - /backup/postgres:/backup
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: postgres -c logging_collector=on -c log_directory=/var/log/postgresql
+
+  prometheus:
+    restart: always
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=90d'
+      - '--web.enable-lifecycle'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAIN}`)"
+      - "traefik.http.routers.prometheus.tls=true"
+
+  grafana:
+    restart: always
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN}`)"
+      - "traefik.http.routers.grafana.tls=true"
+
+  traefik:
+    image: traefik:v2.5
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${SSL_CERT_PATH}:/etc/traefik/certs/cert.pem:ro
+      - ${SSL_KEY_PATH}:/etc/traefik/certs/key.pem:ro
+    command:
+      - "--api.insecure=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=${SSL_EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+
+volumes:
+  postgres_data:
+  prometheus_data:
+  grafana_data:

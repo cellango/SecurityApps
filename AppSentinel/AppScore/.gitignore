@@ -1,0 +1,153 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+venv/
+.venv/
+
+# Node/React
+node_modules/
+/frontend/build
+/frontend/coverage
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backend specific
+backend/app.db
+backend/*.sqlite
+backend/instance/
+backend/coverage.xml
+backend/htmlcov/
+backend/.coverage
+backend/test-reports/
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.env
+backend/venv/
+backend/logs/
+
+# Frontend specific
+frontend/node_modules/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/build/
+frontend/coverage/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Database
+*.db
+*.sqlite3
+*.sqlite
+
+# Logs
+*.log
+logs/
+log/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Generated reports
+/reports/
+*.pdf
+*.csv
+*.xlsx
+
+# Security/Secrets
+*.pem
+*.key
+*.cert
+.env*
+!.env.example
+
+# Test artifacts
+.coverage
+coverage/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Application specific secrets
+backend/config/secrets.py
+backend/config/keys/
+frontend/src/config/secrets.js
+backend/config/scoring_weights.json
+backend/config/api_keys.json
+
+# Test artifacts
+backend/tests/.pytest_cache/
+backend/tests/__pycache__/
+backend/tests/reports/
+frontend/cypress/videos/
+frontend/cypress/screenshots/
+
+# Security assessment data
+backend/data/assessments/*.json
+backend/data/reports/*.pdf
+backend/data/exports/*.csv
+
+# Local development
+*.local
+.local/
+
+# Temporary files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Scoring templates and configurations
+backend/templates/scoring/*.json
+backend/config/compliance/*.yaml

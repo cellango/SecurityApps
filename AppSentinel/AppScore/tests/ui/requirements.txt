@@ -1,0 +1,6 @@
+selenium==4.15.2
+behave==1.2.6
+webdriver-manager==4.0.1
+pytest==7.4.3
+allure-behave==2.13.2
+selenium-page-object==2.0.1

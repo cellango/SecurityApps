@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  admin-console:
+    build:
+      target: staging
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=staging
+      - REACT_APP_API_URL=https://staging.${DOMAIN}/api
+
+  postgres:
+    restart: unless-stopped
+    volumes:
+      - postgres_staging_data:/var/lib/postgresql/data
+      - /backup/postgres:/backup
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: postgres -c logging_collector=on -c log_directory=/var/log/postgresql
+
+  prometheus:
+    restart: unless-stopped
+    volumes:
+      - prometheus_staging_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+
+  grafana:
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    volumes:
+      - grafana_staging_data:/var/lib/grafana
+
+volumes:
+  postgres_staging_data:
+  prometheus_staging_data:
+  grafana_staging_data:

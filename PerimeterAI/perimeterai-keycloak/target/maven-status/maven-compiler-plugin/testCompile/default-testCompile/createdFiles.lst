@@ -1,0 +1,2 @@
+org/perimeter/keycloak/test/CucumberTest.class
+org/perimeter/keycloak/test/steps/TenantManagementSteps.class

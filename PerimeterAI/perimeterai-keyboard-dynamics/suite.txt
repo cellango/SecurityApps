@@ -1,0 +1,3 @@
+export EXTERNAL_DB_URL=postgresql://postgres:perimeter123@host.docker.internal:5432/keyboard_dynamics
+export DB_SERVICE=none
+docker-compose -f docker-compose-standalone.yml --profile no-postgres up

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="248" fill="#1976D2" stroke="#1565C0" stroke-width="16"/>
+  
+  <!-- App Icon Grid -->
+  <g transform="translate(128, 128)">
+    <!-- Top Left App -->
+    <rect x="0" y="0" width="96" height="96" rx="16" fill="#90CAF9"/>
+    <!-- Top Right App -->
+    <rect x="160" y="0" width="96" height="96" rx="16" fill="#90CAF9"/>
+    <!-- Bottom Left App -->
+    <rect x="0" y="160" width="96" height="96" rx="16" fill="#90CAF9"/>
+    <!-- Bottom Right App -->
+    <rect x="160" y="160" width="96" height="96" rx="16" fill="#90CAF9"/>
+    
+    <!-- Center Connection Lines -->
+    <path d="M96 48 L160 48" stroke="#90CAF9" stroke-width="8"/>
+    <path d="M96 208 L160 208" stroke="#90CAF9" stroke-width="8"/>
+    <path d="M48 96 L48 160" stroke="#90CAF9" stroke-width="8"/>
+    <path d="M208 96 L208 160" stroke="#90CAF9" stroke-width="8"/>
+  </g>
+</svg>

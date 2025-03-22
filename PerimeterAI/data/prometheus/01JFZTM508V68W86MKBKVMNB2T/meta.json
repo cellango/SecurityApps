@@ -1,0 +1,17 @@
+{
+	"ulid": "01JFZTM508V68W86MKBKVMNB2T",
+	"minTime": 1735148926555,
+	"maxTime": 1735149600000,
+	"stats": {
+		"numSamples": 99766,
+		"numSeries": 2441,
+		"numChunks": 2441
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01JFZTM508V68W86MKBKVMNB2T"
+		]
+	},
+	"version": 1
+}

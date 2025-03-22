@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      target: builder  # Use the builder stage for development
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/node_modules  # Keep node_modules in container
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true  # Enable hot reload on Windows/WSL
+    command: npm start

@@ -1,0 +1,14 @@
+<![CDATA[<div class="realm-selector">
+    <h2 class="welcome-header" data-ng-show="!auth.user">{{:: 'welcome-header' | translate}}</h2>
+
+    <div class="realm-title">
+        <select class="form-control" ng-model="current.realm" ng-options="realm.realm as realm.realm for realm in realms track by realm.realm"></select>
+    </div>
+
+    <ul class="nav nav-tabs nav-tabs-pf">
+        <li ng-class="{active: path[0] == 'welcome'}"><a href="#/welcome">{{:: 'welcome' | translate}}</a></li>
+        <li ng-class="{active: path[0] == 'server-info'}"><a href="#/server-info">{{:: 'server-info' | translate}}</a></li>
+        <li ng-class="{active: path[0] == 'providers'}"><a href="#/providers">{{:: 'providers' | translate}}</a></li>
+        <li ng-class="{active: path[0] == 'tenant'}"><a href="#/realms/{{current.realm}}/tenant">{{:: 'tenant-management' | translate}}</a></li>
+    </ul>
+</div>]]>

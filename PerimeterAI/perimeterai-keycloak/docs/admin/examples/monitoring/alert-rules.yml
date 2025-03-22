@@ -1,0 +1,45 @@
+groups:
+  - name: tenant_alerts
+    rules:
+      - alert: TenantHighErrorRate
+        expr: rate(keycloak_failed_login_attempts{client=~"tenant-.*"}[5m]) > 10
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: High error rate for tenant {{ $labels.client }}
+          description: "Error rate is {{ $value }} per second"
+
+      - alert: TenantHighResponseTime
+        expr: rate(keycloak_response_time_seconds{client=~"tenant-.*"}[5m]) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High response time for tenant {{ $labels.client }}
+          description: "Response time is {{ $value }} seconds"
+
+      - alert: TenantResourceUsage
+        expr: keycloak_tenant_memory_usage_bytes{client=~"tenant-.*"} > 1073741824
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: High resource usage for tenant {{ $labels.client }}
+          description: "Memory usage is {{ $value | humanize }}B"
+
+      - alert: TenantInactive
+        expr: time() - keycloak_tenant_last_access{client=~"tenant-.*"} > 86400
+        labels:
+          severity: info
+        annotations:
+          summary: Tenant inactive for 24h
+          description: "Tenant {{ $labels.client }} has been inactive for over 24 hours"
+
+      - alert: ConfigurationDrift
+        expr: keycloak_tenant_config_version{client=~"tenant-.*"} > keycloak_tenant_config_version{client=~"tenant-.*"} offset 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Configuration drift detected
+          description: "Configuration changed for tenant {{ $labels.client }}"

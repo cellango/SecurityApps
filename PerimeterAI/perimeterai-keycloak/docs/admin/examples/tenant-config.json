@@ -1,0 +1,49 @@
+{
+  "tenant": {
+    "basic": {
+      "client_id": "tenant-acme",
+      "client_protocol": "openid-connect",
+      "root_url": "https://acme.example.com",
+      "access_type": "confidential",
+      "valid_redirect_uris": [
+        "https://acme.example.com/*",
+        "https://app.acme.example.com/*"
+      ],
+      "web_origins": [
+        "https://acme.example.com",
+        "https://app.acme.example.com"
+      ]
+    },
+    "attributes": {
+      "tenant_id": "tenant-acme-123",
+      "tenant_name": "Acme Corporation",
+      "tenant_domain": "acme.example.com",
+      "tenant_plan": "enterprise",
+      "tenant_status": "active",
+      "tenant_contact": "admin@acme.example.com",
+      "tenant_created": "2024-12-25",
+      "tenant_features": ["signature", "authentication", "audit"]
+    },
+    "roles": [
+      {
+        "name": "tenant-admin",
+        "description": "Tenant Administrator",
+        "composite": true,
+        "permissions": [
+          "manage-users",
+          "manage-roles",
+          "view-reports"
+        ]
+      },
+      {
+        "name": "tenant-user",
+        "description": "Regular Tenant User",
+        "composite": false,
+        "permissions": [
+          "sign-documents",
+          "view-own-reports"
+        ]
+      }
+    ]
+  }
+}

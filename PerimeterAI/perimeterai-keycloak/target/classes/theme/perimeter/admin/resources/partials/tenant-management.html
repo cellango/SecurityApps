@@ -1,0 +1,79 @@
+<![CDATA[<div class="col-sm-9 col-md-10 col-sm-push-3 col-md-push-2">
+    <h1>Tenant Management</h1>
+
+    <!-- Add Tenant Button -->
+    <div class="action-buttons">
+        <button class="btn btn-primary" ng-click="addTenant()">
+            <span class="pficon pficon-add-circle-o"></span>
+            Create Tenant
+        </button>
+    </div>
+
+    <!-- Add Tenant Form -->
+    <div class="tenant-form" ng-show="showAddForm">
+        <form class="form-horizontal" ng-submit="addTenant()">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="tenant-name">Name</label>
+                <div class="col-sm-4">
+                    <input type="text" id="tenant-name" class="form-control" ng-model="newTenant.name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="tenant-id">ID</label>
+                <div class="col-sm-4">
+                    <input type="text" id="tenant-id" class="form-control" ng-model="newTenant.id" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="tenant-description">Description</label>
+                <div class="col-sm-4">
+                    <input type="text" id="tenant-description" class="form-control" ng-model="newTenant.description">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-default" ng-click="showAddForm = false">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tenant List Table -->
+    <table class="table table-striped table-bordered tenant-list-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="tenant in tenants">
+                <td ng-if="!tenant.editing">{{tenant.name}}</td>
+                <td ng-if="!tenant.editing">{{tenant.id}}</td>
+                <td ng-if="!tenant.editing">{{tenant.description}}</td>
+                <td ng-if="!tenant.editing">{{tenant.status}}</td>
+                <td ng-if="!tenant.editing">
+                    <button class="btn btn-default btn-sm" ng-click="editTenant(tenant)">
+                        <span class="pficon pficon-edit"></span>
+                    </button>
+                    <button class="btn btn-danger btn-sm" ng-click="deleteTenant(tenant)">
+                        <span class="pficon pficon-delete"></span>
+                    </button>
+                </td>
+                <td ng-if="tenant.editing" colspan="4">
+                    <form class="form-inline">
+                        <input type="text" class="form-control" ng-model="editingTenant.name" required>
+                        <input type="text" class="form-control" ng-model="editingTenant.id" required>
+                        <input type="text" class="form-control" ng-model="editingTenant.description">
+                        <button type="button" class="btn btn-primary" ng-click="saveTenant(tenant)">Save</button>
+                        <button type="button" class="btn btn-default" ng-click="cancelEdit(tenant)">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>]]>

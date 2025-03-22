@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    image: ${ECR_REGISTRY:-security-score-card}/backend:${IMAGE_TAG:-latest}
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_ENV=production
+      - LOG_LEVEL=WARNING
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-security_score_card}
+      - DB_USER=${DB_USER}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      # AWS credentials will be provided by IAM role
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      replicas: ${BACKEND_REPLICAS:-2}
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /security-score-card/backend
+        awslogs-region: ${AWS_REGION:-us-east-1}
+        awslogs-stream-prefix: prod
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    image: ${ECR_REGISTRY:-security-score-card}/frontend:${IMAGE_TAG:-latest}
+    ports:
+      - "3001:80"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=${API_URL:-http://api.security-score-card.com}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      replicas: ${FRONTEND_REPLICAS:-2}
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /security-score-card/frontend
+        awslogs-region: ${AWS_REGION:-us-east-1}
+        awslogs-stream-prefix: prod
+
+  # Note: In production, the database should be managed separately
+  # (e.g., AWS RDS) and not part of this compose file

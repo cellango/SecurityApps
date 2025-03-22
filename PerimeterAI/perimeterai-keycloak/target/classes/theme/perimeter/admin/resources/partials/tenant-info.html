@@ -1,0 +1,102 @@
+<div class="col-sm-9 col-md-10 col-sm-push-3 col-md-push-2">
+    <h1>{{:: 'tenant-management' | translate}}</h1>
+
+    <div class="tenant-management">
+        <!-- Tenant List -->
+        <div class="tenant-list" data-ng-show="!showTenantForm">
+            <div class="table-toolbar">
+                <div class="pull-right">
+                    <button class="btn btn-primary" data-ng-click="showAddTenant()">
+                        <i class="fa fa-plus"></i> {{:: 'add-tenant' | translate}}
+                    </button>
+                </div>
+            </div>
+
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{:: 'tenant-name' | translate}}</th>
+                        <th>{{:: 'tenant-id' | translate}}</th>
+                        <th>{{:: 'tenant-description' | translate}}</th>
+                        <th>{{:: 'tenant-status' | translate}}</th>
+                        <th>{{:: 'actions' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="tenant in tenants">
+                        <td>{{tenant.name}}</td>
+                        <td>{{tenant.id}}</td>
+                        <td>{{tenant.description}}</td>
+                        <td>
+                            <span class="label" ng-class="{'label-success': tenant.status === 'active', 'label-default': tenant.status === 'inactive'}">
+                                {{tenant.status}}
+                            </span>
+                        </td>
+                        <td class="kc-action-cell">
+                            <button class="btn btn-default btn-sm" data-ng-click="editTenant(tenant)">
+                                {{:: 'edit' | translate}}
+                            </button>
+                            <button class="btn btn-danger btn-sm" data-ng-click="deleteTenant(tenant)">
+                                {{:: 'delete' | translate}}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tenant Form -->
+        <div class="tenant-form" data-ng-show="showTenantForm">
+            <form class="form-horizontal" name="tenantForm" novalidate>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="tenantName">{{:: 'tenant-name' | translate}} *</label>
+                        <div class="col-md-6">
+                            <input class="form-control" type="text" id="tenantName" name="tenantName" 
+                                   data-ng-model="tenant.name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="tenantId">{{:: 'tenant-id' | translate}} *</label>
+                        <div class="col-md-6">
+                            <input class="form-control" type="text" id="tenantId" name="tenantId" 
+                                   data-ng-model="tenant.id" required ng-disabled="editMode">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="tenantDescription">{{:: 'tenant-description' | translate}}</label>
+                        <div class="col-md-6">
+                            <textarea class="form-control" id="tenantDescription" name="tenantDescription" 
+                                      data-ng-model="tenant.description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label" for="tenantStatus">{{:: 'tenant-status' | translate}} *</label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="tenantStatus" name="tenantStatus" 
+                                    data-ng-model="tenant.status" required>
+                                <option value="active">{{:: 'active' | translate}}</option>
+                                <option value="inactive">{{:: 'inactive' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-10 col-md-offset-2">
+                            <button class="btn btn-primary" type="submit" data-ng-click="saveTenant()"
+                                    data-ng-disabled="tenantForm.$invalid">
+                                {{:: 'save' | translate}}
+                            </button>
+                            <button class="btn btn-default" type="button" data-ng-click="cancelEdit()">
+                                {{:: 'cancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

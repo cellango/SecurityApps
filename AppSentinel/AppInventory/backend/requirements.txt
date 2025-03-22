@@ -1,0 +1,20 @@
+Flask==2.3.3
+Flask-SQLAlchemy==3.0.5
+Flask-JWT-Extended==4.5.2
+Flask-Migrate==4.0.4
+Flask-CORS==4.0.0
+psycopg2-binary==2.9.7
+python-dotenv==1.0.0
+pytest==7.4.2
+Werkzeug==2.3.7
+structlog==23.1.0
+pandas==2.0.3
+SQLAlchemy==2.0.20
+celery==5.3.6
+redis==5.0.1
+flower==2.0.1  # For monitoring Celery tasks
+requests==2.31.0  # For making HTTP requests
+python-jose[cryptography]==3.3.0
+python3-saml==1.15.0
+python-keycloak==3.3.0
+fastapi-keycloak==1.0.10

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  admin-console:
+    build:
+      target: development
+    volumes:
+      - ./admin-console/src:/app/src
+      - ./admin-console/public:/app/public
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3000/api
+
+  postgres:
+    ports:
+      - "5432:5432"
+    command: postgres -c logging_collector=on -c log_directory=/var/log/postgresql
+
+  prometheus:
+    volumes:
+      - ./data/prometheus:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+
+  grafana:
+    environment:
+      - GF_AUTH_DISABLE_LOGIN_FORM=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+    volumes:
+      - ./data/grafana:/var/lib/grafana

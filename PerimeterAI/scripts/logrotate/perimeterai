@@ -1,0 +1,15 @@
+/var/log/perimeterai/*.log {
+    daily
+    rotate 10
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0640 perimeterai perimeterai
+    dateext
+    dateformat -%Y%m%d
+    size 10M
+    postrotate
+        kill -HUP `cat /var/run/perimeterai.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}
